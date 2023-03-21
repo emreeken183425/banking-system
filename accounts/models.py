@@ -12,7 +12,7 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
-    username = None
+    username = models.CharField(max_length=50)
     email = models.EmailField(unique=True, null=False, blank=False)
 
     objects = UserManager()
