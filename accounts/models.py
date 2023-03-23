@@ -12,12 +12,12 @@ from .managers import UserManager
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=50)
+    username = models.CharField(max_length=75)
     email = models.EmailField(unique=True, null=False, blank=False)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -28,7 +28,14 @@ class User(AbstractUser):
         if hasattr(self, 'account'):
             return self.account.balance
         return 0
+class UserProfile(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    image= models.ImageField( upload_to='media',null=True)
 
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 class BankAccountType(models.Model):
     name = models.CharField(max_length=128)
