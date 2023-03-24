@@ -22,12 +22,12 @@
                 <a href="{% url 'transactions:withdraw_money' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
                     Withdraw
                 </a>
-                <a href="{% url 'transactions:withdraw_money' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
+                <a href="#" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">
                     Create an Account
                 </a>
             </div>
             <div>
-                <a href="{% url 'accounts:user_logout' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Welcome {{request.user.username}} </a>
+                <a href="#" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Welcome {{request.user.username}} </a>
             </div>
             <div>
                 <a href="{% url 'accounts:user_logout' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Logout</a>
@@ -35,7 +35,7 @@
             <div class="m-2 profile-container" >
                 <div class="relative inline-block">
                     <button class="inline-flex items-center justify-center rounded-full h-10 w-10" type="button" aria-haspopup="true" aria-expanded="false">
-                        <img class="h-8 w-8 rounded-full" src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" alt="Profile Photo">
+                        <img class="h-8 w-8 rounded-full" src="{{request.user.image}}" alt="Profile Photo">
                     </button>
                     <div class="dropdown-menu hidden absolute z-50 mt-2 py-2 w-48 bg-white rounded-md shadow-lg">
                         <a href="#" class="menu-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Profile Settings</a>
@@ -46,14 +46,7 @@
                         <a href="#" class="sub-menu-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">Checking</a>
                     </div>
                 </div>             
-                   {% comment %} <div class="dropdown-menu">
-                    <a href="{% url 'accounts:user_profile' %}" class="menu-item">Profile Settings</a>
-                    <a href="{% url 'accounts:user_account' %}" class="menu-item">Account Settings</a>
-                    <a href="{% url 'accounts:user_settings' %}" class="menu-item">User Settings</a>
-                    <hr class="menu-divider">
-                    <a href="{% url 'accounts:user_savings' %}" class="sub-menu-item">Savings</a>
-                    <a href="{% url 'accounts:user_checking' %}" class="sub-menu-item">Checking</a>
-                </div> {% endcomment %}
+                   
             </div>
         {% else %}
             <div class="text-md lg:flex-grow"></div>

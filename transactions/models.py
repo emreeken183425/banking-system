@@ -24,7 +24,7 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.account.account_no)
+        return f"{self.account.user.username}-- {self.account.account_no}     "
 
     class Meta:
         ordering = ['timestamp']

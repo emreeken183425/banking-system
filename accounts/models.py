@@ -32,10 +32,6 @@ class User(AbstractUser):
 
 
 
-
-
-
-
 class BankAccountType(models.Model):
     name = models.CharField(max_length=128)
     maximum_withdrawal_amount = models.DecimalField(
