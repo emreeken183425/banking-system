@@ -112,7 +112,9 @@ from django.conf.urls.static import static
 urlpatterns +=static(settings.MEDIA_URL,document_roor=settings.MEDIA_ROOT) bunu yaz
  yada settings py da 
  MEDIA_URL="/media/"
-MEDIA_ROOR=os.path.join(BASE_DIR,"media") bunları yaz mainle aynı dizinde media klasörü aç
+MEDIA_ROOT=os.path.join(BASE_DIR,"media") bunları yaz mainle aynı dizinde media klasörü aç
+
+
 
 **** DATABSE İLE BAĞLANMA NASIL*****
 # Database

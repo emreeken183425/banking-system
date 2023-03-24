@@ -14,28 +14,27 @@ from .managers import UserManager
 class User(AbstractUser):
     username = models.CharField(max_length=75)
     email = models.EmailField(unique=True, null=False, blank=False)
-
+    phone_number = models.IntegerField(null=True, blank=True)
     objects = UserManager()
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.email
+        return f"{self.username} {self.email}"
 
     @property
     def balance(self):
         if hasattr(self, 'account'):
             return self.account.balance
         return 0
-class UserProfile(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    image= models.ImageField( upload_to='media',null=True)
 
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+
+
+
+
+
 
 class BankAccountType(models.Model):
     name = models.CharField(max_length=128)
@@ -124,8 +123,34 @@ class UserAddress(models.Model):
     )
     street_address = models.CharField(max_length=512)
     city = models.CharField(max_length=256)
-    postal_code = models.PositiveIntegerField()
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    postal_code = models.CharField(max_length=10)
     country = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.user.email
+        return self.user.username
+    
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User,
+        related_name='profile',
+        on_delete=models.CASCADE,
+    )
+    
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    image= models.ImageField('resim',blank=True,null=True,upload_to="media/")
+    user_bank_account = models.OneToOneField(
+        UserBankAccount,
+        related_name='user_profile',
+        on_delete=models.CASCADE,
+    )
+    user_address = models.OneToOneField(
+        UserAddress,
+        related_name='user_profile',
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
