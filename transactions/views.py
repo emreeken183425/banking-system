@@ -33,20 +33,31 @@ class TransactionRepostView(LoginRequiredMixin, ListView):
         )
 
         daterange = self.form_data.get("daterange")
+        min_amount = self.form_data.get("min_amount")
+        max_amount = self.form_data.get("max_amount")
 
         if daterange:
             queryset = queryset.filter(timestamp__date__range=daterange)
 
+        if min_amount:
+            queryset = queryset.filter(amount__gte=min_amount)
+
+        if max_amount:
+            queryset = queryset.filter(amount__lte=max_amount)
+
+        ordering = self.request.GET.get('ordering')
+        if ordering:
+            if ordering == '1':
+              queryset = queryset.order_by('timestamp')
+            elif ordering == '2':
+              queryset = queryset.order_by('-amount')
+            elif ordering == '3':
+                 queryset = queryset.order_by('amount')
+            elif ordering == '4':
+                queryset = queryset.filter(amount__gte=min_amount, amount__lte=max_amount)
+        queryset = queryset.order_by('timestamp')
+
         return queryset.distinct()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'account': self.request.user.account,
-            'form': TransactionDateRangeForm(self.request.GET or None)
-        })
-
-        return context
 
 
 class TransactionCreateMixin(LoginRequiredMixin, CreateView):

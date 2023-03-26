@@ -1,7 +1,7 @@
 
 
 
-<nav class="flex items-center justify-between flex-wrap bg-gray-800 p-6">
+<nav class="flex items-center justify-between flex-wrap bg-green-800 p-6">
     <div class="flex items-center flex-shrink-0 text-white mr-6">
         <span class="font-semibold text-xl tracking-tight">Techtorial Banking System</span>
     </div>
@@ -26,12 +26,13 @@
                     Create an Account
                 </a>
             </div>
+             <div>
+                <a href="{% url 'accounts:user_logout' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Logout</a>
+            </div>
             <div>
                 <a href="#" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Welcome {{request.user.username}} </a>
             </div>
-            <div>
-                <a href="{% url 'accounts:user_logout' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Logout</a>
-            </div>
+           
             <div class="m-2 profile-container" >
                 <div class="relative inline-block">
                     <button class="inline-flex items-center justify-center rounded-full h-10 w-10" type="button" aria-haspopup="true" aria-expanded="false">

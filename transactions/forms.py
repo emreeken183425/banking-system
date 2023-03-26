@@ -75,6 +75,8 @@ class WithdrawForm(TransactionForm):
 
 class TransactionDateRangeForm(forms.Form):
     daterange = forms.CharField(required=False)
+    min_amount = forms.DecimalField(required=False)
+    max_amount = forms.DecimalField(required=False)
 
     def clean_daterange(self):
         daterange = self.cleaned_data.get("daterange")
