@@ -1,14 +1,27 @@
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, RedirectView
-
+from rest_framework import generics, status
+from rest_framework.response import Response
 from .forms import UserRegistrationForm, UserAddressForm
-
+from .models import BankAccountType, UserBankAccount
+from .serializers import BankAccountTypeSerializer, UserBankAccountSerializer, UserSerializer
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class UserRegistrationView(TemplateView):
@@ -18,9 +31,7 @@ class UserRegistrationView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return HttpResponseRedirect(
-                reverse_lazy('transactions:transaction_report')
-            )
+            return HttpResponseRedirect(reverse_lazy('transactions:transaction_report'))
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -36,14 +47,9 @@ class UserRegistrationView(TemplateView):
             login(self.request, user)
             messages.success(
                 self.request,
-                (
-                    f'Thank You For Creating A Bank Account. '
-                    f'Your Account Number is {user.account.account_no}. '
-                )
+                f'Thank You For Creating A Bank Account. Your Account Number is {user.account.account_no}.'
             )
-            return HttpResponseRedirect(
-                reverse_lazy('transactions:deposit_money')
-            )
+            return HttpResponseRedirect(reverse_lazy('transactions:deposit_money'))
 
         return self.render_to_response(
             self.get_context_data(
@@ -57,12 +63,11 @@ class UserRegistrationView(TemplateView):
             kwargs['registration_form'] = UserRegistrationForm()
         if 'address_form' not in kwargs:
             kwargs['address_form'] = UserAddressForm()
-
         return super().get_context_data(**kwargs)
 
 
 class UserLoginView(LoginView):
-    template_name='accounts/user_login.html'
+    template_name = 'accounts/user_login.html'
     redirect_authenticated_user = False
 
 
@@ -73,3 +78,23 @@ class LogoutView(RedirectView):
         if self.request.user.is_authenticated:
             logout(self.request)
         return super().get_redirect_url(*args, **kwargs)
+
+
+class BankAccountTypeListCreateView(generics.ListCreateAPIView):
+    queryset = BankAccountType.objects.all()
+    serializer_class = BankAccountTypeSerializer
+
+
+class BankAccountTypeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BankAccountType.objects.all()
+    serializer_class = BankAccountTypeSerializer
+
+
+class UserBankAccountListCreateView(generics.ListCreateAPIView):
+    queryset = UserBankAccount.objects.all()
+    serializer_class = UserBankAccountSerializer
+
+
+class UserBankAccountRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserBankAccount.objects.all()
+    serializer_class = UserBankAccountSerializer

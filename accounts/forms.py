@@ -98,7 +98,4 @@ class UserProfileForm(forms.ModelForm):
  
 
 
-# class BankAccountForm(forms.ModelForm):
-#     class Meta:
-#         model = UserBankAccount
-#         fields = ['account_type', 'gender', 'birth_date', 'initial_deposit_date']
+
