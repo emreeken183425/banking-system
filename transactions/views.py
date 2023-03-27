@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-
+from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -28,36 +28,45 @@ class TransactionRepostView(LoginRequiredMixin, ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(
-            account=self.request.user.account
-        )
-
+        queryset = super().get_queryset().filter(account=self.request.user.account)
         daterange = self.form_data.get("daterange")
         min_amount = self.form_data.get("min_amount")
         max_amount = self.form_data.get("max_amount")
 
+        # Filtreleme parametrelerine göre sorguyu güncelle
         if daterange:
             queryset = queryset.filter(timestamp__date__range=daterange)
 
-        if min_amount:
-            queryset = queryset.filter(amount__gte=min_amount)
+        if min_amount and max_amount:
+            queryset = queryset.filter(amount__range=[Decimal(min_amount), Decimal(max_amount)])
+        elif min_amount:
+            queryset = queryset.filter(amount__gte=Decimal(min_amount))
+        elif max_amount:
+            queryset = queryset.filter(amount__lte=Decimal(max_amount))
 
-        if max_amount:
-            queryset = queryset.filter(amount__lte=max_amount)
+        transaction_type = self.request.GET.get('transaction_type')
+        if transaction_type:
+            queryset = queryset.filter(transaction_type=transaction_type)
 
-        ordering = self.request.GET.get('ordering')
-        if ordering:
-            if ordering == '1':
-              queryset = queryset.order_by('timestamp')
-            elif ordering == '2':
-              queryset = queryset.order_by('-amount')
-            elif ordering == '3':
-                 queryset = queryset.order_by('amount')
-            elif ordering == '4':
-                queryset = queryset.filter(amount__gte=min_amount, amount__lte=max_amount)
-        queryset = queryset.order_by('timestamp')
+        return queryset.order_by('-timestamp')
 
-        return queryset.distinct()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        account = self.request.user.account
+        transactions = context['object_list']
+        final_balance = account.balance
+        for transaction in transactions:
+            if transaction.transaction_type == DEPOSIT:
+                final_balance += transaction.amount
+            elif transaction.transaction_type == WITHDRAWAL:
+                final_balance -= transaction.amount
+
+            transaction.balance_after_transaction = final_balance
+
+        context['account'] = account
+        context['final_balance'] = final_balance
+        context['form'] = TransactionDateRangeForm(initial=self.form_data)
+        return context
 
 
 class TransactionCreateMixin(LoginRequiredMixin, CreateView):
