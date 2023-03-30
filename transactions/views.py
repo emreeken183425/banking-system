@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import CreateView, ListView
-
+import datetime
 from transactions.constants import DEPOSIT, WITHDRAWAL
 from transactions.forms import (
     DepositForm,
@@ -28,27 +28,29 @@ class TransactionRepostView(LoginRequiredMixin, ListView):
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(account=self.request.user.account)
-        daterange = self.form_data.get("daterange")
-        min_amount = self.form_data.get("min_amount")
-        max_amount = self.form_data.get("max_amount")
+        queryset = super().get_queryset()
+        filter_type = self.request.GET.get('filter')
+        if filter_type == 'date':
+           daterange = self.request.GET.get('daterange')
+           if daterange:
+            dates = daterange.split(" - ")
+            if len(dates) == 2:
+                start_date = datetime.datetime.strptime(dates[0], '%Y-%m-%d').date()
+                end_date = datetime.datetime.strptime(dates[1], '%Y-%m-%d').date() + datetime.timedelta(days=1)
+                queryset = queryset.filter(timestamp__range=[start_date, end_date], account__user=self.request.user)
+            else:
+                messages.warning(self.request, "Please enter a valid date range.")
+        elif filter_type == 'deposit':
+          queryset = queryset.filter(transaction_type=1, account__user=self.request.user)
+        elif filter_type == 'withdraw':
+          queryset = queryset.filter(transaction_type=2, account__user=self.request.user)
+        elif filter_type == 'amount':
+            queryset = queryset.filter(transaction_type=3, account__user=self.request.user, amount__lt=0)
+        else:
+          queryset = queryset.filter(account__user=self.request.user)
+        return queryset
 
-        # Filtreleme parametrelerine göre sorguyu güncelle
-        if daterange:
-            queryset = queryset.filter(timestamp__date__range=daterange)
 
-        if min_amount and max_amount:
-            queryset = queryset.filter(amount__range=[Decimal(min_amount), Decimal(max_amount)])
-        elif min_amount:
-            queryset = queryset.filter(amount__gte=Decimal(min_amount))
-        elif max_amount:
-            queryset = queryset.filter(amount__lte=Decimal(max_amount))
-
-        transaction_type = self.request.GET.get('transaction_type')
-        if transaction_type:
-            queryset = queryset.filter(transaction_type=transaction_type)
-
-        return queryset.order_by('-timestamp')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
