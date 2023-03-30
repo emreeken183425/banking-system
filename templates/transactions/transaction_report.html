@@ -13,23 +13,24 @@
 <h1 class="font-mono font-bold text-3xl text-center pb-5 pt-10">Transaction Report</h1>
 <hr />
 <form method="get">
-<div class="mt-10 h-10 pl-3 pr-2 bg-white border rounded-md border-gray-500 flex justify-between items-center relative">
-<input type="search" name="daterange" id="search" placeholder="Filter using date range" value="{{ request.GET.daterange }}" class="appearance-none w-full outline-none focus:outline-none active:outline-none" />
-<select name="filter" id="filter" class="ml-2 border rounded-md">
-<option value="">Select Filter</option>
-<option value="date">Date</option>
-<option value="deposit">Deposit</option>
-<option value="withdrawal">Withdraw</option>
-<option value="amount">Amount</option>
-</select>
-<button type="submit" class="ml-2 border rounded-md px-3 py-1 bg-green-500 text-white font-semibold hover:bg-green-600">Filter</button>
-</div>
-{% if form.daterange.errors %}
-{% for error in form.daterange.errors %}
-<p class="text-red-600 text-sm italic">{{ error }}</p>
-{% endfor %}
-{% endif %}
+    <div class="mt-10 h-10 pl-3 pr-2 bg-white border rounded-md border-gray-500 flex justify-between items-center relative">
+        <input type="search" name="daterange" id="search" placeholder="Filter using date range" value="{{ request.GET.daterange }}" class="appearance-none w-full outline-none focus:outline-none active:outline-none" />
+        <select name="filter" id="filter" class="ml-2 border rounded-md">
+            <option value="">Select Filter</option>
+            <option value="date"{% if request.GET.filter == 'date' %} selected="selected"{% endif %}>Date</option>
+            <option value="deposit"{% if request.GET.filter == 'deposit' %} selected="selected"{% endif %}>Deposit</option>
+            <option value="withdraw"{% if request.GET.filter == 'withdraw' %} selected="selected"{% endif %}>Withdraw</option>
+            <option value="amount"{% if request.GET.filter == 'amount' %} selected="selected"{% endif %}>Amount</option>
+        </select>
+        <button type="submit" class="ml-2 border rounded-md px-3 py-1 bg-green-500 text-white font-semibold hover:bg-green-600">Filter</button>
+    </div>
+    {% if form.daterange.errors %}
+        {% for error in form.daterange.errors %}
+            <p class="text-red-600 text-sm italic">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
 </form>
+
 <table class="table-auto mx-auto w-full mt-8">
 <thead class="bg-green-500 text-white">
 <tr class="uppercase font-semibold text-sm">

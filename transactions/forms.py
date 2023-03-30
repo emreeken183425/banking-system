@@ -75,8 +75,8 @@ class WithdrawForm(TransactionForm):
 
 class TransactionDateRangeForm(forms.Form):
     daterange = forms.CharField(required=False)
-    min_amount = forms.DecimalField(required=False)
-    max_amount = forms.DecimalField(required=False)
+    min_amount = forms.ChoiceField (required=False)
+    max_amount = forms.ChoiceField (required=False)
 
     def clean_daterange(self):
         daterange = self.cleaned_data.get("daterange")
@@ -93,3 +93,18 @@ class TransactionDateRangeForm(forms.Form):
                 raise forms.ValidationError("Please select a date range.")
         except (ValueError, AttributeError):
             raise forms.ValidationError("Invalid date range")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        min_amount = cleaned_data.get('min_amount')
+        max_amount = cleaned_data.get('max_amount')
+
+        if min_amount is not None and max_amount is not None and min_amount > max_amount:
+            raise forms.ValidationError('The minimum amount must be less than or equal to the maximum amount.')
+
+        return cleaned_data
+
+# forms.py
+
+class TransactionFilter(forms.Form):
+    filter = forms.ChoiceField(choices=(('', 'Select Filter'), ('deposit', 'Deposit'), ('withdrawal', 'Withdrawal'),('amount','amount')))

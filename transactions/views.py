@@ -30,6 +30,7 @@ class TransactionRepostView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         filter_type = self.request.GET.get('filter')
+        queryset = queryset.filter(account__user=self.request.user)
         if filter_type == 'date':
            daterange = self.request.GET.get('daterange')
            if daterange:
