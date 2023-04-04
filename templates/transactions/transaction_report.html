@@ -20,7 +20,7 @@
             <option value="date"{% if request.GET.filter == 'date' %} selected="selected"{% endif %}>Date</option>
             <option value="deposit"{% if request.GET.filter == 'deposit' %} selected="selected"{% endif %}>Deposit</option>
             <option value="withdraw"{% if request.GET.filter == 'withdraw' %} selected="selected"{% endif %}>Withdraw</option>
-            <option value="amount"{% if request.GET.filter == 'amount' %} selected="selected"{% endif %}>Amount</option>
+            {% comment %} <option value="amount"{% if request.GET.filter == 'amount' %} selected="selected"{% endif %}>Amount</option> {% endcomment %}
         </select>
         <button type="submit" class="ml-2 border rounded-md px-3 py-1 bg-green-500 text-white font-semibold hover:bg-green-600">Filter</button>
     </div>
@@ -55,7 +55,36 @@
 </tr>
 </tbody>
 </table>
+
+
+
+
+{% if is_paginated %}
+  <div class="pagination text-center text-white bg-green-500 mt-1 p-4 ">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current-page">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+  </div>
+{% endif %}
+
+
+
+
 {% endblock %}
+
+
 
 {% block footer_extra %}
     <script type="text/javascript">

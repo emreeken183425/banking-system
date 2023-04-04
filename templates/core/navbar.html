@@ -33,23 +33,21 @@
                 <a href="#" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Welcome {{request.user.username}} </a>
             </div>
            
-            <div class="relative dropdown ml-3">
-                <div>
-                  <button class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:shadow-solid" id="user-menu" aria-haspopup="true">
-                   
-                    <img class="h-8 w-8 rounded-full" src="{{request.user.image}}" alt="Profile Photo">
-                  </button>
-                </div>
-                <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
-                  <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Profile Settings</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Account Settings</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">User Settings</a>
-                    <hr class="my-2">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Savings</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Checking</a>
-                  </div>
-                </div>
+            <div class="relative dropdown ml-3 ">
+                <div class="relative dropdown ml-3">
+                    <div>
+                      <button class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:shadow-solid" id="user-menu" aria-haspopup="true" onclick="toggleDropdown()">
+                        <img class="h-8 w-8 rounded-full" src="{{request.user.image}}" alt="Profile Photo">
+                      </button>
+                    </div>
+                    <div id="dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg hidden">
+                        <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Profile Settings</a>
+                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Account Settings</a>
+                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Savings</a>
+                          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Checking</a>
+                        </div>
+                      </div>
         {% else %}
             <div class="text-md lg:flex-grow"></div>
             <div>
@@ -61,3 +59,10 @@
         {% endif %}
     </div>
 </nav>
+
+<script>
+    function toggleDropdown() {
+      var dropdownMenu = document.getElementById("dropdown-menu");
+      dropdownMenu.classList.toggle("hidden");
+    }
+  </script>
