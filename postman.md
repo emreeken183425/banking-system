@@ -8,6 +8,8 @@ GET FOR İD:http://localhost:8000/accounts/users/< WRİTE İD>
 
 POST:http://localhost:8000/accounts/users/
 
+PUT:http://localhost:8000/accounts/users/< WRİTE İD>/
+
 DELETE:http://localhost:8000/accounts/users/< WRİTE İD>
  
 
@@ -33,3 +35,8 @@ GET FOR İD:http://localhost:8000/accounts/bank-account-types/< WRİTE İD>
 POST:http://localhost:8000/accounts/bank-account-types/
 
 DELETE:http://localhost:8000/accounts/bank-account-types/< WRİTE İD>
+
+
+
+
+
