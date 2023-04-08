@@ -1,0 +1,28 @@
+<!-- account_settings.html -->
+
+
+{% block content %}
+    <h1>Account Settings</h1>
+    <h2>Bank Accounts</h2>
+    <ul>
+    {% for account in user.account_set.all %}
+        <li>{{ account }}</li>
+        <ul>
+            <li>Account Type: {{ account.account_type }}</li>
+            <li>Account No: {{ account.account_no }}</li>
+            <li>Balance: {{ account.balance }}</li>
+        </ul>
+    {% endfor %}
+    </ul>
+    <h2>Bank Account Types</h2>
+    <ul>
+    {% for account_type in bank_account_types %}
+        <li>{{ account_type }}</li>
+        <ul>
+            <li>Maximum Withdrawal Amount: {{ account_type.maximum_withdrawal_amount }}</li>
+            <li>Annual Interest Rate: {{ account_type.annual_interest_rate }}</li>
+            <li>Interest Calculation Per Year: {{ account_type.interest_calculation_per_year }}</li>
+        </ul>
+    {% endfor %}
+    </ul>
+{% endblock %}

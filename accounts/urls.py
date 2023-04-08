@@ -11,7 +11,8 @@ UserBankAccountRetrieveUpdateDestroyView,
 UserAddressViewSet,
 UserProfileViewSet,
 UserProfileView,
-UserBankAccountListCreateView
+UserBankAccountListCreateView,
+AccountSettingsView,
 
 )
 
@@ -33,4 +34,5 @@ path('user-profiles/', UserProfileViewSet.as_view({'get': 'list', 'post': 'creat
 path('user-profiles/int:pk/', UserProfileViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='user_profiles_detail'),
 path('profile-settings/', UserProfileView.as_view(), name='profile_settings'),
  path('create-account/', UserBankAccountListCreateView.as_view(), name='create_account'),
+ path('account-settings/', AccountSettingsView.as_view(), name='account_settings'),
 ]

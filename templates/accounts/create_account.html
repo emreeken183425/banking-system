@@ -1,23 +1,20 @@
 <!-- templates/create_account.html -->
-
-
-
 {% block content %}
   <form action="{% url 'accounts:user_bank_account_list_create' %}" method="POST">
     {% csrf_token %}
-    <label for="account_type">Account Type:</label>
+    <label for="account_type">Hesap Tipi:</label>
     <select name="account_type">
       {% for account_type in account_types %}
         <option value="{{ account_type.id }}">{{ account_type.name }}</option>
       {% endfor %}
     </select><br><br>
-    <label for="gender">Gender:</label>
+    <label for="gender">Cinsiyet:</label>
     <input type="radio" id="gender_male" name="gender" value="M">
-    <label for="gender_male">Male</label>
+    <label for="gender_male">Erkek</label>
     <input type="radio" id="gender_female" name="gender" value="F">
-    <label for="gender_female">Female</label><br><br>
-    <label for="birth_date">Birth Date:</label>
+    <label for="gender_female">Kadın</label><br><br>
+    <label for="birth_date">Doğum Tarihi:</label>
     <input type="date" id="birth_date" name="birth_date"><br><br>
-    <input type="submit" value="Create Bank Account">
+    <input type="submit" value="Banka Hesabı Oluştur">
   </form>
 {% endblock %}

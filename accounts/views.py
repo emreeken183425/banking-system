@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from rest_framework import viewsets
 from django.views import View
+from rest_framework.views import APIView
+from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.views import LoginView
 from django.shortcuts import HttpResponseRedirect,render
@@ -120,6 +122,11 @@ class UserAddressViewSet(viewsets.ModelViewSet):
     serializer_class = UserAddressSerializer
 
 
+
+class AccountSettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/account_settings.html'
+   
+
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -130,3 +137,39 @@ class UserProfileView(View):
     def get(self, request):
         return render(request, self.template_name)
 
+
+class UserProfileDetailView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return UserProfile.objects.get(user=pk)
+        except UserProfile.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get(self, request, pk):
+        profile = self.get_object(pk)
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        profile = self.get_object(pk)
+        serializer = UserProfileSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        profile = self.get_object(pk)
+        profile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def profile_settings(request):
+    user = request.user
+    profile = user.profile
+    context = {
+        'user': user,
+        'profile': profile,
+    }
+    return render(request, 'profile_settings.html', context)
