@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import BankAccountType, UserBankAccount
+from .models import BankAccountType, UserBankAccount,UserAddress, UserProfile
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -29,4 +29,17 @@ class UserBankAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserBankAccount
+        fields = '__all__'        
+
+
+
+class UserAddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAddress
+        fields = '__all__'
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
         fields = '__all__'        

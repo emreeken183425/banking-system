@@ -1,14 +1,18 @@
 from django.contrib import messages
 from django.contrib.auth import login, logout
+from rest_framework import viewsets
+from django.views import View
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.views import LoginView
-from django.shortcuts import HttpResponseRedirect, get_object_or_404
+from django.shortcuts import HttpResponseRedirect,render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, RedirectView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .forms import UserRegistrationForm, UserAddressForm
-from .models import BankAccountType, UserBankAccount
-from .serializers import BankAccountTypeSerializer, UserBankAccountSerializer, UserSerializer
+from .models import BankAccountType, UserBankAccount, UserAddress, UserProfile
+from .serializers import BankAccountTypeSerializer, UserBankAccountSerializer, UserSerializer,UserAddressSerializer, UserProfileSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -39,17 +43,18 @@ class UserRegistrationView(TemplateView):
         address_form = UserAddressForm(self.request.POST)
 
         if registration_form.is_valid() and address_form.is_valid():
-            user = registration_form.save()
-            address = address_form.save(commit=False)
-            address.user = user
-            address.save()
+           user = registration_form.save()
+           address = address_form.save(commit=False)
+           address.user = user
+           address.save()
 
-            login(self.request, user)
-            messages.success(
-                self.request,
-                f'Thank You For Creating A Bank Account. Your Account Number is {user.account.account_no}.'
+           user_bank_account = user.account.get() # retrieve the related UserBankAccount object
+           messages.success(
+              self.request,
+                f'Thank You For Creating A Bank Account. Your Account Number is {user_bank_account.account_no}.'
             )
-            return HttpResponseRedirect(reverse_lazy('transactions:deposit_money'))
+           return HttpResponseRedirect(reverse_lazy('transactions:deposit_money'))
+
 
         return self.render_to_response(
             self.get_context_data(
@@ -90,11 +95,38 @@ class BankAccountTypeRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPI
     serializer_class = BankAccountTypeSerializer
 
 
-class UserBankAccountListCreateView(generics.ListCreateAPIView):
-    queryset = UserBankAccount.objects.all()
+class UserBankAccountListCreateView(LoginRequiredMixin, generics.ListCreateAPIView):
+    model = UserBankAccount
     serializer_class = UserBankAccountSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        account_types = BankAccountType.objects.all()
+        context = {
+            'account_types': account_types
+        }
+        return render(request, 'accounts/create_account.html', context=context)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class UserBankAccountRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = UserBankAccount.objects.all()
     serializer_class = UserBankAccountSerializer
+
+class UserAddressViewSet(viewsets.ModelViewSet):
+    queryset = UserAddress.objects.all()
+    serializer_class = UserAddressSerializer
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class UserProfileView(View):
+    template_name = 'accounts/profile_settings.html'
+    
+    def get(self, request):
+        return render(request, self.template_name)
+

@@ -37,6 +37,27 @@ POST:http://localhost:8000/accounts/bank-account-types/
 DELETE:http://localhost:8000/accounts/bank-account-types/< WRİTE İD>
 
 
+************** RESTful API for USER PROFİLE  TYPE  ************
+
+
+GET:http://localhost:8000/accounts/user-profiles/
+
+GET FOR İD:http://localhost:8000/accounts/user-profiles/< WRİTE İD>
+
+POST:http://localhost:8000/accounts/user-profiles/
+
+DELETE:http://localhost:8000/accounts/user-profiles/< WRİTE İD>
 
 
 
+
+************** RESTful API for USER ADRESS  TYPE  ************
+
+
+GET:http://localhost:8000/accounts/user-addresses/
+
+GET FOR İD:http://localhost:8000/accounts/user-addresses/< WRİTE İD>
+
+POST:http://localhost:8000/accounts/user-addresses/
+
+DELETE:http://localhost:8000/accounts/user-addresses/< WRİTE İD>
