@@ -48,7 +48,7 @@ class BankAccountType(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(12)],
         help_text='The number of times interest will be calculated per year'
     )
-
+    interest_calculation_per_year = models.IntegerField()
     def __str__(self):
         return self.name
 
