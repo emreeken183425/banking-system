@@ -50,7 +50,7 @@ class UserRegistrationView(TemplateView):
            address.user = user
            address.save()
 
-           user_bank_account = user.account.get() # retrieve the related UserBankAccount object
+           user_bank_account = UserBankAccount.objects.get(user=user) 
            messages.success(
               self.request,
                 f'Thank You For Creating A Bank Account. Your Account Number is {user_bank_account.account_no}.'
