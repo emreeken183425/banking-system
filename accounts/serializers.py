@@ -13,12 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
             'email': {'required': False},
         }
 
-
-
-
-
-
-
 class BankAccountTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccountType

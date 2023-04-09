@@ -16,7 +16,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=False, blank=False)
     phone_number = models.CharField(max_length=20,null=True, blank=True)
     objects = UserManager()
-
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -28,7 +28,7 @@ class User(AbstractUser):
         if hasattr(self, 'account'):
             return self.account.balance
         return 0
-
+    
 
 
 
@@ -80,7 +80,7 @@ class UserBankAccount(models.Model):
         on_delete=models.CASCADE
     )
     account_no = models.PositiveIntegerField(unique=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICE)
+    gender = models.CharField(max_length=25, choices=GENDER_CHOICE)
     birth_date = models.DateField(null=True, blank=True)
     balance = models.DecimalField(
         default=0,
@@ -128,15 +128,6 @@ class UserAddress(models.Model):
     
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(
-        User,
-        related_name='profile',
-        on_delete=models.CASCADE,
-    )
-    
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    image= models.ImageField('resim',blank=True,null=True,upload_to="media/")
     user_bank_account = models.OneToOneField(
         UserBankAccount,
         related_name='user_profile',
@@ -147,6 +138,16 @@ class UserProfile(models.Model):
         related_name='user_profile',
         on_delete=models.CASCADE,
     )
+    user = models.OneToOneField(
+        User,
+        related_name='profile',
+        on_delete=models.CASCADE,
+    )
+    
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    image= models.ImageField('resim',blank=True,null=True,upload_to="media/")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+

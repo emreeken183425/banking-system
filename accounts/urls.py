@@ -13,6 +13,10 @@ UserProfileViewSet,
 UserProfileView,
 UserBankAccountListCreateView,
 AccountSettingsView,
+DeleteAccountView,
+UserUpdateView,
+AccountSettingsView,
+    
 
 )
 
@@ -33,6 +37,11 @@ path('user-addresses/int:pk/', UserAddressViewSet.as_view({'get': 'retrieve', 'p
 path('user-profiles/', UserProfileViewSet.as_view({'get': 'list', 'post': 'create'}), name='user_profiles'),
 path('user-profiles/int:pk/', UserProfileViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='user_profiles_detail'),
 path('profile-settings/', UserProfileView.as_view(), name='profile_settings'),
- path('create-account/', UserBankAccountListCreateView.as_view(), name='create_account'),
- path('account-settings/', AccountSettingsView.as_view(), name='account_settings'),
+path('create-account/', UserBankAccountListCreateView.as_view(), name='create_account'),
+path('account-settings/', AccountSettingsView.as_view(), name='account_settings'),
+path('delete-account/', DeleteAccountView.as_view(), name='delete_account'),
+ path('profile-settings/', UserUpdateView.as_view(), name='user_update'),
+path('account-settings/', AccountSettingsView.as_view(), name='account_settings'),
+path('account-settings/', AccountSettingsView.as_view(), name='account_settings'),
+path('delete-account/', DeleteAccountView.as_view(), name='delete_account'),
 ]
