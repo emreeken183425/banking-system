@@ -43,12 +43,7 @@
       <input type="number" step="0.01" name="balance" id="balance">
       </div>
     </div>
-    <div  class="flex flex-wrap -mx-3 mb-6">
-      <div  class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-        <label for="interest_start_date" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Interest Start Date:</label>
-      <input type="date" name="interest_start_date" id="interest_start_date">
-    </div>
-      </div>
+    
     <div  class="flex flex-wrap -mx-3 mb-6">
       <div  class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
         <label for="initial_deposit_date" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Initial Deposit Date:</label>
@@ -57,13 +52,21 @@
     </div>
     <div class="flex items-center justify-between">
       <button type="submit" class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Create Account</button>
-      <button class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="update">
-        Update
-      </button>
-      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" name="delete">
-        Delete
+      
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" name="delete" onclick="clearForm()">
+        CLEAR
       </button>
 
     </div>
   </form>
 {% endblock %}
+<script>
+  function clearForm() {
+    document.getElementById("account_type").selectedIndex = 0;
+    document.getElementById("account_no").value = "";
+    document.getElementById("gender").selectedIndex = 0;
+    document.getElementById("birth_date").value = "";
+    document.getElementById("balance").value = "";
+    document.getElementById("initial_deposit_date").value = "";
+  }
+  </script>
