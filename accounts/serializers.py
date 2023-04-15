@@ -19,11 +19,27 @@ class BankAccountTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserBankAccountSerializer(serializers.ModelSerializer):
-    account_type = BankAccountTypeSerializer()
+    account_type = serializers.CharField(source='account_type.name')
 
     class Meta:
         model = UserBankAccount
-        fields = '__all__'        
+        fields = '__all__'
+
+    def create(self, validated_data):
+        account_type_data = validated_data.pop('account_type')
+        try:
+            account_type = BankAccountType.objects.get(name=account_type_data)
+        except BankAccountType.DoesNotExist:
+            raise serializers.ValidationError("Invalid account type")
+
+        user_bank_account = UserBankAccount.objects.create(
+            user=self.context['request'].user,
+            account_type=account_type,
+            balance=0.0
+        )
+
+        return user_bank_account
+       
 
 
 

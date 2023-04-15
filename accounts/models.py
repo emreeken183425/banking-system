@@ -1,10 +1,7 @@
-from decimal import Decimal
 
+import random
 from django.contrib.auth.models import AbstractUser
-from django.core.validators import (
-    MinValueValidator,
-    MaxValueValidator,
-)
+
 from django.db import models
 
 from .constants import GENDER_CHOICE
@@ -39,13 +36,25 @@ class BankAccountType(models.Model):
         max_digits=12
     )
     
-   
+    def create(self, validated_data):
+       account_type_data = validated_data.pop('account_type')['name']
+       account_type = BankAccountType.objects.get(name=account_type_data)
+    
+       user_bank_account = UserBankAccount.objects.create(
+          user=self.context['request'].user,
+          account_type=account_type,
+          balance=0.0
+       )
+
+       return user_bank_account
     
     def __str__(self):
         return self.name
 
     
 
+
+import random
 
 class UserBankAccount(models.Model):
     user = models.OneToOneField(
@@ -71,6 +80,16 @@ class UserBankAccount(models.Model):
 
     def __str__(self):
         return f"{self.account_no} {self.user.username}"
+    
+    def save(self, *args, **kwargs):
+        if not self.account_no:
+            # If account_no is not set, generate a random 10-digit number
+            while True:
+                account_no = random.randint(10**9, 10**10-1)
+                if not UserBankAccount.objects.filter(account_no=account_no).exists():
+                    self.account_no = account_no
+                    break
+        super().save(*args, **kwargs)
 
    
 
