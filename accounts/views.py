@@ -266,3 +266,5 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return self.partial_update(request, *args, **kwargs)
     
 
+
+

@@ -102,7 +102,7 @@ class UserAddress(models.Model):
     )
     street_address = models.CharField(max_length=512)
     city = models.CharField(max_length=256)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    # phone_number = models.CharField(max_length=15, blank=True, null=True)
     postal_code = models.CharField(max_length=10)
     country = models.CharField(max_length=256)
 
