@@ -13,10 +13,14 @@ class UserSerializer(serializers.ModelSerializer):
             'email': {'required': False},
         }
 
+
+
 class BankAccountTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccountType
         fields = '__all__'
+
+
 
 class UserBankAccountSerializer(serializers.ModelSerializer):
     account_type = serializers.CharField(source='account_type.name')

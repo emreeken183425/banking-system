@@ -51,8 +51,17 @@
         {% else %}
             <div class="text-md lg:flex-grow"></div>
             <div>
-                <a href="{% url 'accounts:user_login' %}" class="mr-2 inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Login</a>
-            </div>
+                <button class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0" onclick="openModal()">Login</button>
+              </div>
+              
+              <div id="my-modal" class="modal">
+                <div class="modal-content">
+                  
+                  <a href="{% url 'accounts:user_login' %}" class="mr-2 inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Student</a>
+                  <a href="http://127.0.0.1:8000/admin/login/?next=/admin/" class="mr-2 inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Admin</a>
+                  <button  class="mr-2 inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0" onclick="closeModal()">X</button>
+                </div>
+              </div>
             <div>
                 <a href="{% url 'accounts:user_registration' %}" class="inline-block font-medium text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-800 hover:bg-white mt-4 lg:mt-0">Register</a>
             </div>
@@ -65,4 +74,17 @@
       var dropdownMenu = document.getElementById("dropdown-menu");
       dropdownMenu.classList.toggle("hidden");
     }
+
+    function openModal() {
+        // modal açılacak
+        var modal = document.getElementById("my-modal");
+        modal.style.display = "block";
+      }
+    
+      function closeModal() {
+        // modal kapatılacak
+        var modal = document.getElementById("my-modal");
+        modal.style.display = "none";
+      }
+
   </script>
