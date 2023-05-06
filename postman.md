@@ -13,7 +13,7 @@ PUT:http://localhost:8000/accounts/users/< WRİTE İD>/
 DELETE:http://localhost:8000/accounts/users/< WRİTE İD>
  
 
- ************** RESTful API for ACCOUNTS   ************
+ ************** RESTful API for ACCOUNTS " user must be Login"  ************
 
 GET:http://localhost:8000/accounts/user-bank-accounts/
 
