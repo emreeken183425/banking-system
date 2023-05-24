@@ -82,7 +82,7 @@
     </div>
   </div>
     <div class="flex items-center justify-between">
-      <button type="submit"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save Changes</button>
+      {% comment %} <button type="submit"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Save Changes</button> {% endcomment %}
    
     </div>
   </form>
@@ -116,20 +116,24 @@ $(document).ready(function() {
   $('#address').val(user.address.street_address);
 
   // PUT Request on form submit
-  $('#profile-form').submit(function(e) {
-    e.preventDefault();
-    $.ajax({
-      url: "{% url 'accounts:user_update' %}",
-      type: "POST",
-      data: $(this).serialize(),
-      success: function(response) {
-        alert("Your profile has been updated.");
-      },
-      error: function(response) {
-        alert("An error occurred while updating your profile.");
-      }
+  $(document).ready(function() {
+    // PUT Request on form submit
+    $('#profile-form').submit(function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "{% url 'accounts:user_update' %}",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(response) {
+          alert("Profiliniz güncellendi.");
+        },
+        error: function(response) {
+          alert("Profil güncelleme işlemi sırasında bir hata oluştu.");
+        }
+      });
     });
   });
+  
 });
 </script>
 {% endblock %}

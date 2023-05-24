@@ -41,6 +41,5 @@ path('profile-settings/', UserProfileView.as_view(), name='profile_settings'),
 path('create-account/', UserBankAccountListCreateView.as_view(), name='create_account'),
 path('account-settings/', AccountSettingsView.as_view(), name='account_settings'),
 path('delete-account/', DeleteAccountView.as_view(), name='delete_account'),
-path('profile-settings/', UserUpdateView.as_view(), name='user_update'),
 path('delete-account/', DeleteAccountView.as_view(), name='delete_account'),
 ]
