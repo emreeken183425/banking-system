@@ -67,53 +67,6 @@ STATİC DOSYALARI İÇİN
 ]
 
 
-REACT İLE DJANGO ARASINDA BAĞLANTI KURMAK İÇİN 
-
-
-*** shell comutları OOREM ***
-```
-python manage.py shell  # yazarak shell e gir
-exit() ile çıkış yapabilirsin
-from fscohort.modls import Student(models ismi databsede oluşturduğun tabloyu çağırdık)
- print(Student) ile yazdırdık
-  s1=Student(first_name="victor",last_name="abc",number=5)databsede ki kolonlar yada modelsdeki isimler ile yei bir öğrenci oluşturduk
-  s1 yazarak terminalde gördük
-  s1.save() ile databese kaydettik
-s1.first_name="henry" ile first_name değiştirdik
-s1.save() ile databese kaydettik
-s2=Student.objects.create (first_name= 'kadir',last_name="abc",number=55 ) buşekilde save() e gerek kalmadan direkt kaydeder
- alls=Student.objects.all()
- alls bu şekilde databsedeki tüm bilgileri görebiliriz
-for x in alls:x  bu şekilde döngü ile de çağırabiliriz
-g1=Student.objects.get(number=55) #aynı numaradan fazla varsa filter kullanırız
-g1 buşeklide numarası 55 olan kişiyi getirdik
- f1=Student.objects.filter(number=77)
->>> f1  aynı numaradan fazla varsa filter kullanırız
- f2=Student.objects.exclude(number=55)
->>> f2 bu şekilde numarası 55 olmayanları getirdik exclude fonksiyonu ile
- f3=Student.objects.filter(first_name__startswith="E") 
->>> f3 baş harfi e ile başlayanları getir örneği
-f3=Student.objects.filter(last_name__startswith="E")  
->>> f3 burada ise last namei e ile başlayanlar getirilir
-f4=Student.objects.filter(last_name__endswith="E")  
->>> f4 burada ise last namei e ile BİTEN getirir.
- 
-
-```
-# resim yükleme için aşağıdaki adımlar
-
-modelse avatar=models.ImageField('resim',blank=True,null=True,upload_to="meida/")# 
-pip install pillow resim yüklemek için indirmemiz gereken paket
-
-MEDIA_URL='media/' setting.py a da bunu yazman gerekli main settings.py
-sonra main urls.py a gidip 
-from django.conf import settings
-from django.conf.urls.static import static
-urlpatterns +=static(settings.MEDIA_URL,document_roor=settings.MEDIA_ROOT) bunu yaz
- yada settings py da 
- MEDIA_URL="/media/"
-MEDIA_ROOT=os.path.join(BASE_DIR,"media") bunları yaz mainle aynı dizinde media klasörü aç
-
 
 
 **** DATABSE İLE BAĞLANMA NASIL*****
@@ -132,19 +85,35 @@ DATABASES = {
         
     }
 }
-YUKARIDAKİLERDEN SONRA DATABSE KAYIT İÇİN python manage.py migrate YAP
 
 
-Templates
-Variables: {{ variable }}
-Tags: {% tag %}
-Filters : {{ dict1.django|title }}
-Comments:: Single line: {# this won't be rendered #}
-{# This is a single line comment #}
+MYSQL DATABSE BAĞLANTI İÇİN 
 
-Multi line: {% comment %}
-{% comment %} This is a multi line comment, you can't see it on the page! {% endcomment %}
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydb',// DATABASE NAME
+        'USER': 'root',
+        'PASSWORD': 'admin', // KENDİ ŞİFREN 
+        'HOST':'localhost',
+        'PORT':'3306',
+    }
+}
+
+
+
+SONRA 
+python manage.py makemigrations
+python manage.py migrate
+
+ MODELSİ DATABSE KAYDETMEK İÇİN BUNU YAZ 
+
+
+ADMİN OLUŞTURMAK İÇİN 
+TERMİNALDE 
+
+python manage.py createsuperuser YAZ VE GELEN ALANLARI DOLDUR .
 
 
 

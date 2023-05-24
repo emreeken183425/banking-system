@@ -97,6 +97,22 @@ DATABASES = {
     }
 }
 
+#  MYSQL DATABSE İÇİN AŞAĞIDAKİ YERLERİ DOLDURMAN YETERLİ SONRA DATABSE KAYDETMEK İÇİN AŞAĞIDAKİ LERİ YAZ TERMİNALE 
+# python manage.py makemigrations
+# python manage.py migrate
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'mydb',// DATABASE NAME
+#         'USER': 'root',
+#         'PASSWORD': 'admin', // KENDİ ŞİFREN 
+#         'HOST':'localhost',
+#         'PORT':'3306',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

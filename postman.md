@@ -4,6 +4,10 @@
 
 GET:http://localhost:8000/accounts/users/
 
+
+
+
+
 GET FOR İD:http://localhost:8000/accounts/users/< WRİTE İD>
 
 POST:http://localhost:8000/accounts/users/
